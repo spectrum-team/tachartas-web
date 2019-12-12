@@ -1,43 +1,17 @@
-import React from 'react';
-import { Layout, Menu, Icon, Table } from 'antd';
+import React, { useState } from 'react';
+import { Layout, Menu, Icon, Button } from 'antd';
+import CreateEvent from './CreateEvent';
+import EventList from './EventList';
+import Event from './Models/Event';
 
 const { Header, Content } = Layout;
 
 const App: React.FC = () => {
 
-  const dataSource = [
-    {
-      key: '1',
-      name: 'Mike',
-      age: 32,
-      address: '10 Downing Street',
-    },
-    {
-      key: '2',
-      name: 'John',
-      age: 42,
-      address: '10 Downing Street',
-    },
-  ];
-  
-  const columns = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    },
-  ];
+  const [isVisible, toggleVisible] = useState(false);
+  const [event, changeEvent] = useState(new Event());
 
+  
   return <Layout className="layout" style={{ height: 'inherit' }}>
     <Header style={{ background: '#7200ca' }}>
       <Menu
@@ -52,11 +26,16 @@ const App: React.FC = () => {
     </Header>
     <Content style={{ padding: '20px' }}>
       <div style={{ background: '#fff', padding: 24, minHeight: '100%' }}>
-      <Table dataSource={dataSource} columns={columns} />;
+        <Button  type="primary" onClick={() => {
+            toggleVisible(true)
+            changeEvent(new Event())
+          }}  >Nuevo</Button>
+        <EventList changeEvent={changeEvent} toggleVisible={toggleVisible} />
       </div>
     </Content>
+    <CreateEvent isVisible={isVisible} close={() => toggleVisible(false)} event={event} />
   </Layout>
-    ;
+    
 }
 
 export default App;
